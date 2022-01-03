@@ -14,7 +14,7 @@ import { StatusBar } from 'expo-status-bar'
 
 const items = Platform.select({
     ios: ['ec'],
-    android: [''],
+    android: ['ec_1'],
 })
 
 export default function App() {
