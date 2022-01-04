@@ -16,7 +16,6 @@ const items = Platform.select({
     ios: ['ec'],
     android: ['ec_1'],
 })
-
 export default function App() {
     const [result, setResult] = React.useState<
         InAppPurchases.IAPItemDetails[] | null
@@ -44,6 +43,8 @@ export default function App() {
                                 purchase,
                                 true,
                             )
+                        } else {
+                            console.log('something is wrong')
                         }
                     })
                 } else if (
@@ -89,6 +90,7 @@ export default function App() {
         if (responseCode === InAppPurchases.IAPResponseCode.OK) {
             console.log('products be gotten')
             setResult(results)
+            console.log(results)
         } else {
             console.log('no products')
             return []
@@ -102,7 +104,7 @@ export default function App() {
         })
     }
     const buyStuff = async () => {
-        await InAppPurchases.purchaseItemAsync('ec', 'test')
+        await InAppPurchases.purchaseItemAsync(items[0], 'doh!')
         // .then(() => {
         //     if (isCancelled) return
         //     console.log('purchased')
@@ -110,6 +112,12 @@ export default function App() {
         // .catch((err) => {
         //     console.log('err', err)
         // })
+    }
+
+    const getOrderHistory = async () => {
+        InAppPurchases.getPurchaseHistoryAsync().then((res) => {
+            console.log('order history', res)
+        })
     }
     return (
         <View style={styles.container}>
@@ -133,17 +141,38 @@ export default function App() {
                     height: 60,
                     width: 250,
                     borderRadius: 30,
+                    marginTop: 20,
                 }}
                 onPress={buyStuff}>
                 <Text
                     style={{
-                        fontSize: 32,
+                        fontSize: 24,
                         color: '#fff',
                         fontWeight: 'bold',
-                        paddingVertical: 10,
                         marginVertical: 10,
                     }}>
                     Buy Now!
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#672323',
+                    height: 60,
+                    width: 250,
+                    borderRadius: 30,
+                    marginTop: 20,
+                }}
+                onPress={getOrderHistory}>
+                <Text
+                    style={{
+                        fontSize: 24,
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        marginVertical: 10,
+                    }}>
+                    Get History
                 </Text>
             </TouchableOpacity>
 
